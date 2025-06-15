@@ -11,7 +11,7 @@ module luminous_msgs {
     struct SensorBuffer {
       std_msgs::msg::Header header;
 
-      @key string robot_name;
+      @key string buffer_id;
 
       sequence<sensor_msgs::msg::Image> image_buffer;
 
