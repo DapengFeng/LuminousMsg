@@ -1,0 +1,23 @@
+// Copyright (c) 2025 Dapeng Feng
+// All rights reserved.
+
+#include "sensor_msgs/msg/Image.idl"
+#include "sensor_msgs/msg/Imu.idl"
+#include "sensor_msgs/msg/PointCloud2.idl"
+#include "std_msgs/msg/Header.idl"
+
+module luminous_msgs {
+  module msg {
+    struct SensorBuffer {
+      std_msgs::msg::Header header;
+
+      @key string robot_name;
+
+      sequence<sensor_msgs::msg::Image> image_buffer;
+
+      sequence<sensor_msgs::msg::Imu> imu_buffer;
+
+      sequence<sensor_msgs::msg::PointCloud2> pointcloud_buffer;
+    };
+  };
+};
