@@ -38,7 +38,7 @@ inline std_msgs::msg::Header toROS2(
   return ros2_msg;
 }
 
-inline luminous_msgs::msg::Header toLuminous(
+inline luminous_msgs::msg::Header fromROS2(
     const std_msgs::msg::Header& msg) noexcept {
   luminous_msgs::msg::Header luminous_msg;
   luminous_msg.stamp = msg.stamp;
@@ -54,10 +54,10 @@ inline geometry_msgs::msg::PoseStamped toROS2(
   return ros2_msg;
 }
 
-inline luminous_msgs::msg::PoseStamped toLuminous(
+inline luminous_msgs::msg::PoseStamped fromROS2(
     const geometry_msgs::msg::PoseStamped& msg) noexcept {
   luminous_msgs::msg::PoseStamped luminous_msg;
-  luminous_msg.header = toLuminous(msg.header);
+  luminous_msg.header = fromROS2(msg.header);
   luminous_msg.pose = msg.pose;
   return luminous_msg;
 }
@@ -71,10 +71,10 @@ inline geometry_msgs::msg::TransformStamped toROS2(
   return ros2_msg;
 }
 
-inline luminous_msgs::msg::TransformStamped toLuminous(
+inline luminous_msgs::msg::TransformStamped fromROS2(
     const geometry_msgs::msg::TransformStamped& msg) noexcept {
   luminous_msgs::msg::TransformStamped luminous_msg;
-  luminous_msg.header = toLuminous(msg.header);
+  luminous_msg.header = fromROS2(msg.header);
   luminous_msg.child_frame_id = std::move(msg.child_frame_id);
   luminous_msg.transform = msg.transform;
   return luminous_msg;
@@ -93,10 +93,10 @@ inline sensor_msgs::msg::Image toROS2(
   return ros2_msg;
 }
 
-inline luminous_msgs::msg::Image toLuminous(
+inline luminous_msgs::msg::Image fromROS2(
     const sensor_msgs::msg::Image& msg) noexcept {
   luminous_msgs::msg::Image luminous_msg;
-  luminous_msg.header = toLuminous(msg.header);
+  luminous_msg.header = fromROS2(msg.header);
   luminous_msg.height = msg.height;
   luminous_msg.width = msg.width;
   luminous_msg.encoding = std::move(msg.encoding);
@@ -119,10 +119,10 @@ inline sensor_msgs::msg::Imu toROS2(
   return ros2_msg;
 }
 
-inline luminous_msgs::msg::Imu toLuminous(
+inline luminous_msgs::msg::Imu fromROS2(
     const sensor_msgs::msg::Imu& msg) noexcept {
   luminous_msgs::msg::Imu luminous_msg;
-  luminous_msg.header = toLuminous(msg.header);
+  luminous_msg.header = fromROS2(msg.header);
   luminous_msg.orientation = msg.orientation;
   luminous_msg.orientation_covariance = msg.orientation_covariance;
   luminous_msg.angular_velocity = msg.angular_velocity;
@@ -148,10 +148,10 @@ inline sensor_msgs::msg::PointCloud2 toROS2(
   return ros2_msg;
 }
 
-inline luminous_msgs::msg::PointCloud2 toLuminous(
+inline luminous_msgs::msg::PointCloud2 fromROS2(
     const sensor_msgs::msg::PointCloud2& msg) noexcept {
   luminous_msgs::msg::PointCloud2 luminous_msgs;
-  luminous_msgs.header = toLuminous(msg.header);
+  luminous_msgs.header = fromROS2(msg.header);
   luminous_msgs.height = msg.height;
   luminous_msgs.width = msg.width;
   luminous_msgs.fields = std::move(msg.fields);
@@ -173,10 +173,10 @@ inline nav_msgs::msg::Odometry toROS2(
   return ros2_msg;
 }
 
-inline luminous_msgs::msg::Odometry toLuminous(
+inline luminous_msgs::msg::Odometry fromROS2(
     const nav_msgs::msg::Odometry& msg) noexcept {
   luminous_msgs::msg::Odometry luminous_msg;
-  luminous_msg.header = toLuminous(msg.header);
+  luminous_msg.header = fromROS2(msg.header);
   luminous_msg.child_frame_id = std::move(msg.child_frame_id);
   luminous_msg.pose = msg.pose;
   luminous_msg.twist = msg.twist;
@@ -194,13 +194,13 @@ inline nav_msgs::msg::Path toROS2(
   return ros2_msg;
 }
 
-inline luminous_msgs::msg::Path toLuminous(
+inline luminous_msgs::msg::Path fromROS2(
     const nav_msgs::msg::Path& msg) noexcept {
   luminous_msgs::msg::Path luminous_msg;
-  luminous_msg.header = toLuminous(msg.header);
+  luminous_msg.header = fromROS2(msg.header);
   luminous_msg.poses.reserve(msg.poses.size());
   for (const auto& pose : msg.poses) {
-    luminous_msg.poses.emplace_back(toLuminous(pose));
+    luminous_msg.poses.emplace_back(fromROS2(pose));
   }
   return luminous_msg;
 }
