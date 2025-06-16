@@ -11,6 +11,8 @@
 #include "std_msgs/msg/header.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
+#include "sensor_msgs/msg/camera_info.hpp"
+#include "sensor_msgs/msg/compressed_image.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "sensor_msgs/msg/imu.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
@@ -23,6 +25,8 @@
 #include "luminous_msgs/msg/transform_stamped.hpp"
 #include "luminous_msgs/msg/odometry.hpp"
 #include "luminous_msgs/msg/path.hpp"
+#include "luminous_msgs/msg/camera_info.hpp"
+#include "luminous_msgs/msg/compressed_image.hpp"
 #include "luminous_msgs/msg/image.hpp"
 #include "luminous_msgs/msg/imu.hpp"
 #include "luminous_msgs/msg/point_cloud2.hpp"
@@ -77,6 +81,58 @@ inline luminous_msgs::msg::TransformStamped fromROS2(
   luminous_msg.header = fromROS2(msg.header);
   luminous_msg.child_frame_id = std::move(msg.child_frame_id);
   luminous_msg.transform = msg.transform;
+  return luminous_msg;
+}
+
+inline sensor_msgs::msg::CameraInfo toROS2(
+    const luminous_msgs::msg::CameraInfo& msg) noexcept {
+  sensor_msgs::msg::CameraInfo ros2_msg;
+  ros2_msg.header = toROS2(msg.header);
+  ros2_msg.height = msg.height;
+  ros2_msg.width = msg.width;
+  ros2_msg.distortion_model = std::move(msg.distortion_model);
+  ros2_msg.d = std::move(msg.d);
+  ros2_msg.k = msg.k;
+  ros2_msg.r = msg.r;
+  ros2_msg.p = msg.p;
+  ros2_msg.binning_x = msg.binning_x;
+  ros2_msg.binning_y = msg.binning_y;
+  ros2_msg.roi = msg.roi;
+  return ros2_msg;
+}
+
+inline luminous_msgs::msg::CameraInfo fromROS2(
+    const sensor_msgs::msg::CameraInfo& msg) noexcept {
+  luminous_msgs::msg::CameraInfo luminous_msg;
+  luminous_msg.header = fromROS2(msg.header);
+  luminous_msg.height = msg.height;
+  luminous_msg.width = msg.width;
+  luminous_msg.distortion_model = std::move(msg.distortion_model);
+  luminous_msg.d = std::move(msg.d);
+  luminous_msg.k = msg.k;
+  luminous_msg.r = msg.r;
+  luminous_msg.p = msg.p;
+  luminous_msg.binning_x = msg.binning_x;
+  luminous_msg.binning_y = msg.binning_y;
+  luminous_msg.roi = msg.roi;
+  return luminous_msg;
+}
+
+inline sensor_msgs::msg::CompressedImage toROS2(
+    const luminous_msgs::msg::CompressedImage& msg) noexcept {
+  sensor_msgs::msg::CompressedImage ros2_msg;
+  ros2_msg.header = toROS2(msg.header);
+  ros2_msg.format = std::move(msg.format);
+  ros2_msg.data = std::move(msg.data);
+  return ros2_msg;
+}
+
+inline luminous_msgs::msg::CompressedImage fromROS2(
+    const sensor_msgs::msg::CompressedImage& msg) noexcept {
+  luminous_msgs::msg::CompressedImage luminous_msg;
+  luminous_msg.header = fromROS2(msg.header);
+  luminous_msg.format = std::move(msg.format);
+  luminous_msg.data = std::move(msg.data);
   return luminous_msg;
 }
 
