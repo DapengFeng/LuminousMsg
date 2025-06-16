@@ -19,17 +19,16 @@
 #include "nav_msgs/msg/odometry.hpp"
 #include "nav_msgs/msg/path.hpp"
 
-
 #include "luminous_msgs/msg/header.hpp"
 #include "luminous_msgs/msg/pose_stamped.hpp"
 #include "luminous_msgs/msg/transform_stamped.hpp"
-#include "luminous_msgs/msg/odometry.hpp"
-#include "luminous_msgs/msg/path.hpp"
 #include "luminous_msgs/msg/camera_info.hpp"
 #include "luminous_msgs/msg/compressed_image.hpp"
 #include "luminous_msgs/msg/image.hpp"
 #include "luminous_msgs/msg/imu.hpp"
 #include "luminous_msgs/msg/point_cloud2.hpp"
+#include "luminous_msgs/msg/odometry.hpp"
+#include "luminous_msgs/msg/path.hpp"
 // clang-format on
 
 namespace luminous_msgs {
