@@ -1,23 +1,22 @@
-// Copyright (c) 2025 Dapeng Feng
-// All rights reserved.
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from luminous_msgs/msg/SensorBuffer.msg
+// generated code does not contain a copyright notice
 
-#include "sensor_msgs/msg/Image.idl"
-#include "sensor_msgs/msg/Imu.idl"
-#include "sensor_msgs/msg/PointCloud2.idl"
-#include "std_msgs/msg/Header.idl"
+#include "luminous_msgs/msg/Header.idl"
+#include "luminous_msgs/msg/Image.idl"
+#include "luminous_msgs/msg/Imu.idl"
+#include "luminous_msgs/msg/PointCloud2.idl"
 
 module luminous_msgs {
   module msg {
     struct SensorBuffer {
-      std_msgs::msg::Header header;
+      luminous_msgs::msg::Header header;
 
-      @key string buffer_id;
+      sequence<luminous_msgs::msg::Image> image_buffer;
 
-      sequence<sensor_msgs::msg::Image> image_buffer;
+      sequence<luminous_msgs::msg::Imu> imu_buffer;
 
-      sequence<sensor_msgs::msg::Imu> imu_buffer;
-
-      sequence<sensor_msgs::msg::PointCloud2> pointcloud_buffer;
+      sequence<luminous_msgs::msg::PointCloud2> pointcloud2_buffer;
     };
   };
 };
