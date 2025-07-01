@@ -19,11 +19,31 @@ from sensor_msgs_py import point_cloud2
 from cv_bridge import CvBridge
 from livox_ros_driver.msg import CustomMsg as LivoxCustomMsg
 from luminous_msgs.msg import Header as LuminousHeader
+from luminous_msgs.msg import CameraInfo as LuminousCameraInfo
 from luminous_msgs.msg import CompressedImage as LuminousCompressedImage
 from luminous_msgs.msg import PointCloud2 as LuminousPointCloud2
 from luminous_msgs.msg import Imu as LuminousImu
 import rosbag2_py
 
+def camera_info_to_luminous_camera_info(
+    camera_info: LuminousCameraInfo, frame_id: str = "camera"
+) -> LuminousCameraInfo:
+    """Convert a LuminousCameraInfo message to a LuminousCameraInfo with a new frame_id."""
+    header = LuminousHeader(stamp=camera_info.header.stamp, frame_id=frame_id)
+
+    return LuminousCameraInfo(
+        header=header,
+        height=camera_info.height,
+        width=camera_info.width,
+        distortion_model=camera_info.distortion_model,
+        D=camera_info.D,
+        K=camera_info.K,
+        R=camera_info.R,
+        P=camera_info.P,
+        binning_x=camera_info.binning_x,
+        binning_y=camera_info.binning_y,
+        roi=camera_info.roi,
+    )
 
 def image_to_luminous_compressed_image(
     image: Union[Image, CompressedImage], frame_id: str = "camera"
@@ -168,6 +188,8 @@ def main():
     topic_types = reader.get_all_topics_and_types()
 
     for topic_type in topic_types:
+        if topic_type.type == "sensor_msgs/msg/CameraInfo":
+            msg_type = "luminous_msgs/msg/CameraInfo"
         if topic_type.type == "sensor_msgs/msg/CompressedImage":
             msg_type = "luminous_msgs/msg/CompressedImage"
         elif topic_type.type == "sensor_msgs/msg/Image":
@@ -198,14 +220,16 @@ def main():
         raise ValueError(f"topic {topic_name} not in bag")
 
     while reader.has_next():
-        topic, data, timestamp = reader.read_next()
+        topic, data, _ = reader.read_next()
         try:
             msg_type = get_message(typename(topic))
             msg = deserialize_message(data, msg_type)
         except Exception as e:
             print(f"Error processing message from {topic}: {e}")
             continue
-        if isinstance(msg, Image) or isinstance(msg, CompressedImage):
+        if isinstance(msg, LuminousCameraInfo):
+            msg = camera_info_to_luminous_camera_info(msg)
+        elif isinstance(msg, Image) or isinstance(msg, CompressedImage):
             msg = image_to_luminous_compressed_image(msg)
         elif isinstance(msg, Imu):
             msg = imu_to_luminous_imu(msg)
