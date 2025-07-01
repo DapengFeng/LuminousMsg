@@ -4,6 +4,7 @@
 
 import argparse
 from typing import Union
+from rclpy.time import Time
 from rclpy.serialization import deserialize_message
 from rclpy.serialization import serialize_message
 from rosidl_runtime_py.utilities import get_message
@@ -213,7 +214,11 @@ def main():
         elif isinstance(msg, PointCloud2):
             msg = pointcloud2_to_luminous_pointcloud2(msg)
 
-        writer.write(topic, serialize_message(msg), timestamp)
+        writer.write(
+            topic,
+            serialize_message(msg),
+            Time.from_msg(msg.header.stamp).nanoseconds,
+        )
 
 
 if __name__ == "__main__":
