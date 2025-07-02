@@ -193,7 +193,7 @@ def main():
         if topic_type.type == "sensor_msgs/msg/CompressedImage":
             msg_type = "luminous_msgs/msg/CompressedImage"
         elif topic_type.type == "sensor_msgs/msg/Image":
-            msg_type = "luminous_msgs/msg/Image"
+            msg_type = "luminous_msgs/msg/CompressedImage"
         elif topic_type.type == "sensor_msgs/msg/Imu":
             msg_type = "luminous_msgs/msg/Imu"
         elif topic_type.type == "livox_ros_driver/msg/CustomMsg":
@@ -209,7 +209,7 @@ def main():
             continue
         writer.create_topic(
             rosbag2_py.TopicMetadata(
-                name=topic_type.name, type=msg_type, serialization_format="cdr"
+                name="/"+topic_type.type, type=msg_type, serialization_format="cdr"
             )
         )
 
@@ -221,6 +221,7 @@ def main():
 
     while reader.has_next():
         topic, data, _ = reader.read_next()
+        frame = topic.lstrip("/").replace("/", "_")
         try:
             msg_type = get_message(typename(topic))
             msg = deserialize_message(data, msg_type)
@@ -228,18 +229,18 @@ def main():
             print(f"Error processing message from {topic}: {e}")
             continue
         if isinstance(msg, LuminousCameraInfo):
-            msg = camera_info_to_luminous_camera_info(msg)
+            msg = camera_info_to_luminous_camera_info(msg, frame)
         elif isinstance(msg, Image) or isinstance(msg, CompressedImage):
-            msg = image_to_luminous_compressed_image(msg)
+            msg = image_to_luminous_compressed_image(msg, frame)
         elif isinstance(msg, Imu):
-            msg = imu_to_luminous_imu(msg)
+            msg = imu_to_luminous_imu(msg, frame)
         elif isinstance(msg, LivoxCustomMsg):
-            msg = livox_to_luminous_pointcloud2(msg)
+            msg = livox_to_luminous_pointcloud2(msg, frame)
         elif isinstance(msg, PointCloud2):
-            msg = pointcloud2_to_luminous_pointcloud2(msg)
+            msg = pointcloud2_to_luminous_pointcloud2(msg, frame)
 
         writer.write(
-            topic,
+            "/"+typename(topic),
             serialize_message(msg),
             Time.from_msg(msg.header.stamp).nanoseconds,
         )
